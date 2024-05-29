@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Ticket Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("/images/e.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            color: black; 
+        }
+
+        .container {
+            background-color: #f2f2f2; 
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 50px; 
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.8); 
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff; 
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; 
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ticket Management System</h1>
+        <hr>
+        <h2>Save Ticket</h2>
+
+        <form action="#" th:action="@{/saveTicket}" th:object="${ticket}" method="POST">
+            <input type="text" th:field="*{eventName}" placeholder="Event Name" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{description}" placeholder="Description" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{price}" placeholder="Price" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{ticketsAvailable}" placeholder="Tickets Available" class="form-control mb-4 col-4">  
+            <input type="text" th:field="*{imageUrl}" placeholder="Image URL" class="form-control mb-4 col-4">        
+            <input type="hidden" th:field="*{myuser}">
+            <button type="submit" class="btn btn-info col-2">Save Ticket</button>
+        </form>
+
+        <hr>
+
+        <a th:href="@{/sellTicket}"  class="btn btn-info">Back to Ticket List</a>
+    </div>
+</body>
+</html>

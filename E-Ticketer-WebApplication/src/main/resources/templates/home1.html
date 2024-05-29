@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-ticketer - Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ADD8E6;
+        }
+        
+        .navbar {
+            background-color: #0492c2;
+            padding: 10px;
+        }
+        .navbar-brand {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .ticket-container {
+            margin: 20px;
+        }
+        
+        .ticket {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; 
+        }
+        .ticket-image {
+            width: 100%;
+            height: 150px;
+            overflow: hidden; 
+        }
+        .ticket-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .ticket-details {
+            padding: 15px;
+            background-color: #fff; 
+        }
+        .ticket-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .ticket-description {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .nav-link{
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .eticketer-logo {
+            max-width: 250px;
+            max-height: 70px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand">eTicketer</a>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container ticket-container">
+        <h2>All Tickets</h2>
+        <form class="mb-4">
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search for tickets..." aria-label="Search for tickets">
+                <button class="btn btn-primary" type="button" onclick="searchTickets()">Search</button>
+            </div>
+        </form>
+        
+        
+        <div id="ticketResults" class="row">
+            <div th:each="ticket : ${listTickets}" class="col-md-4">
+                <div class="ticket">
+                    <div class="ticket-image">
+                        <img th:if="${ticket.imageUrl}" th:src="${ticket.imageUrl}" class="img-fluid" alt="Event Image">
+                        <img th:unless="${ticket.imageUrl}" src="/images/b.jpg" class="img-fluid" alt="Default Image">
+                    </div>
+                    <div class="ticket-details">
+                        <div class="ticket-title" th:text="${ticket.eventName}"></div>
+                        <div class="ticket-description" th:text="${'Price: ₹' + ticket.price + ' | Tickets available: ' + ticket.ticketsAvailable+ ' | Description: '+ticket.description}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchTickets() {
+            var input, filter, div, title, i;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            div = document.getElementById("ticketResults");
+            title = div.getElementsByClassName("ticket-title");
+
+            for (i = 0; i < title.length; i++) {
+                if (title[i].innerText.toUpperCase().indexOf(filter) > -1) {
+                    title[i].parentNode.parentNode.parentNode.style.display = "";
+                } else {
+                    title[i].parentNode.parentNode.parentNode.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+   
+</body>
+</html>
