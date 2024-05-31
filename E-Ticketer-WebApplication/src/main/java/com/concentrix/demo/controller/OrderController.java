@@ -42,7 +42,7 @@ public class OrderController {
 	 @PostMapping("/orderDetails")
 	    public String processOrderDetails(@RequestParam("quantity") int quantity,
 	                                      HttpSession session,Model model) {
-		 int ticketId = (int) session.getAttribute("ticketId");
+		    int ticketId = (int) session.getAttribute("ticketId");
 	        User user=(User)session.getAttribute("userId");
 	        Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
 	        if (quantity <= 0 || quantity > ticket.getTicketsAvailable()) {
@@ -68,6 +68,8 @@ public class OrderController {
             model.addAttribute("totalPrice", totalPrice);
             return "payment";	          	        
 	    }
+	
+
 	 
 	 @GetMapping("/errorOrderQuantity")
 	 public String showOrder(Model model, HttpSession session) {

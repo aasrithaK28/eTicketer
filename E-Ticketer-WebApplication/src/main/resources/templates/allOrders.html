@@ -33,7 +33,7 @@
             width: 100%;
             height: 200px;
             object-fit: cover;
-            border-top-left-radius: 10px; /* Add border radius to top left and right */
+            border-top-left-radius: 10px; 
             border-top-right-radius: 10px;
         }
         .btn-container {
@@ -56,6 +56,17 @@
                     <p class="card-text">Quantity: <span th:text="${order.quantity}"></span></p>
                     <p class="card-text">Total Amount: <span th:text="${order.quantity * order.myTicket.price}"></span></p>
                 </div>
+                
+                <div class="card-footer">
+                        <form action="/resellTicket" method="post">
+                            
+                            <input type="hidden" name="orderId" th:value="${order.orderId}" />
+                             <input type="hidden" name="userId" th:value="${order.myUser.userId}" />
+                            <label for="resellQuantity">Resell Quantity:</label>
+                            <input type="number" name="resellQuantity" id="resellQuantity" value="1" />
+                            <button type="submit" class="btn btn-primary">Resell</button>
+                        </form>
+                    </div>
             </div>
         </div>
     </div>

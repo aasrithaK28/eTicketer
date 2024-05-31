@@ -1,5 +1,7 @@
 package com.concentrix.demo.controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
 import com.concentrix.demo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -63,20 +68,41 @@ public class UserController {
 
 
     
+//    @PostMapping("/login")
+//    public String loginUser(User user, Model model,HttpSession session) {
+//    	logger.info("Logging in user.");
+//        User existingUser = userServiceImpl.findByUserName(user.getUserName());
+//
+//        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
+//        	session.setAttribute("userId",existingUser);
+//        	logger.info("User logged in successfully.");
+//            return "redirect:/home";
+//        } else {
+//        	logger.error("Failed to login. Invalid credentials.");
+//            return "login";
+//        }
+//    }
+    
+    
     @PostMapping("/login")
-    public String loginUser(User user, Model model,HttpSession session) {
-    	logger.info("Logging in user.");
+    public String loginUser(User user, Model model, HttpSession session) {
+        logger.info("Logging in user.");
         User existingUser = userServiceImpl.findByUserName(user.getUserName());
 
         if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
-        	session.setAttribute("userId",existingUser);
-        	logger.info("User logged in successfully.");
+            session.setAttribute("userId", existingUser);
+
+            List<Ticket> userTickets = ticketServiceImpl.getAll(existingUser.getUserId());
+            session.setAttribute("listTickets", userTickets);
+
+            logger.info("User logged in successfully.");
             return "redirect:/home";
         } else {
-        	logger.error("Failed to login. Invalid credentials.");
+            logger.error("Failed to login. Invalid credentials.");
             return "login";
         }
     }
+
     
     @GetMapping("/home1")
     public String showHome1(Model model) {
@@ -108,5 +134,7 @@ public class UserController {
         logger.info("User logged out successfully.");
         return "redirect:/home1"; 
     }
+    
+    
 }
 
