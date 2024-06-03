@@ -1,6 +1,7 @@
 package com.concentrix.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,20 +69,7 @@ public class UserController {
 
 
     
-//    @PostMapping("/login")
-//    public String loginUser(User user, Model model,HttpSession session) {
-//    	logger.info("Logging in user.");
-//        User existingUser = userServiceImpl.findByUserName(user.getUserName());
-//
-//        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
-//        	session.setAttribute("userId",existingUser);
-//        	logger.info("User logged in successfully.");
-//            return "redirect:/home";
-//        } else {
-//        	logger.error("Failed to login. Invalid credentials.");
-//            return "login";
-//        }
-//    }
+
     
     
     @PostMapping("/login")
@@ -112,10 +100,21 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String showHome(Model model) {
+    public String showHome(Model model, HttpSession session) {
     	logger.info("Displaying home page.");
-    	model.addAttribute("listTickets",ticketServiceImpl.getList());
-    	return "home";
+    	User currentUser = (User) session.getAttribute("userId");
+
+       
+        List<Ticket> allTickets = ticketServiceImpl.getList();
+
+        
+        List<Ticket> filteredTickets = allTickets.stream()
+                .filter(ticket -> ticket.getMyuser().getUserId()!= currentUser.getUserId())
+                .collect(Collectors.toList());
+
+        model.addAttribute("listTickets", filteredTickets);
+        return "home";
+
     }
     
     @GetMapping("/help")

@@ -79,9 +79,9 @@ public class TicketController {
     }
 
     @GetMapping("/buy")
-    public String showHome(Model model) {
+    public String showHome(Model model,HttpSession session) {
         logger.info("Showing Home Page for Buying Tickets");
-        model.addAttribute("listTickets", ticketServiceImpl.getList());
+        model.addAttribute("tickets", ticketServiceImpl.getList());
         return "buyTicket";
     }
 
