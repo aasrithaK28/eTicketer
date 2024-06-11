@@ -1,8 +1,10 @@
 package com.concentrix.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +27,7 @@ public class TicketController {
     private final TicketServiceImpl ticketServiceImpl;
     private final OrderServiceImpl orderServiceImpl;
 
-    @Autowired
+    
     public TicketController(TicketServiceImpl ticketServiceImpl, OrderServiceImpl orderServiceImpl) {
         this.ticketServiceImpl = ticketServiceImpl;
         this.orderServiceImpl = orderServiceImpl;
@@ -57,7 +59,7 @@ public class TicketController {
     }
 
     @GetMapping("/showFormForUpdate/{ticketId}")
-    public String showFormForUpdate(@PathVariable(value = "ticketId") int ticketId, Model model, HttpSession session) {
+    public String showFormForUpdate(@PathVariable(value = "ticketId") int ticketId, Model model, HttpSession session) throws TicketNotFoundException {
         logger.info("Showing Form for Update");
         Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
         ticket.setMyuser(((User) session.getAttribute("userId")));
@@ -98,8 +100,17 @@ public class TicketController {
     }
 
     @GetMapping("/pay")
-    public String showPay() {
+    public String showPay(Model model, HttpSession session) {
         logger.info("Showing Payment Page");
+        Order order = (Order) session.getAttribute("order");
+        Ticket ticket = (Ticket) session.getAttribute("ticket");
+        Integer quantity = (Integer) session.getAttribute("quantity");
+        Double totalPrice = (Double) session.getAttribute("totalAmount");
+
+        model.addAttribute("order", order);
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("quantity", quantity);
+        model.addAttribute("totalPrice", totalPrice);
         return "payment";
     }
 
@@ -137,10 +148,19 @@ public class TicketController {
         ticketServiceImpl.saveTicket(resoldTicket);
         
         
-        java.util.List<Ticket> listTickets = (java.util.List<Ticket>) session.getAttribute("listTickets");
+//        java.util.List<Ticket> listTickets = (java.util.List<Ticket>) session.getAttribute("listTickets");
+//        listTickets.add(resoldTicket);
+//        session.setAttribute("listTickets", listTickets);
+//        
+//        
+//        return "redirect:/sellTicket";
+        
+        List<Ticket> listTickets = (List<Ticket>) session.getAttribute("listTickets");
+        if (listTickets == null) {
+            listTickets = new ArrayList<>();
+        }
         listTickets.add(resoldTicket);
         session.setAttribute("listTickets", listTickets);
-        
         
         return "redirect:/sellTicket";
     }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.concentrix.demo.exception.TicketNotFoundException;
 import com.concentrix.demo.model.Order;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
@@ -41,7 +42,7 @@ public class OrderController {
 	
 	 @PostMapping("/orderDetails")
 	    public String processOrderDetails(@RequestParam("quantity") int quantity,
-	                                      HttpSession session,Model model) {
+	                                      HttpSession session,Model model) throws TicketNotFoundException {
 		    int ticketId = (int) session.getAttribute("ticketId");
 	        User user=(User)session.getAttribute("userId");
 	        Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
@@ -72,7 +73,7 @@ public class OrderController {
 
 	 
 	 @GetMapping("/errorOrderQuantity")
-	 public String showOrder(Model model, HttpSession session) {
+	 public String showOrder(Model model, HttpSession session) throws TicketNotFoundException {
 		  logger.info("Showing Order with Error for Invalid Quantity");
 		  model.addAttribute("error", "invalid_quantity");
 		  Ticket ticket = ticketServiceImpl.getTicketByTicketId((int) session.getAttribute("ticketId"));

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.concentrix.demo.exception.UserNotFoundException;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
 import com.concentrix.demo.service.UserServiceImpl;
@@ -68,12 +69,8 @@ public class UserController {
     }
 
 
-    
-
-    
-    
     @PostMapping("/login")
-    public String loginUser(User user, Model model, HttpSession session) {
+    public String loginUser(User user, Model model, HttpSession session) throws UserNotFoundException {
         logger.info("Logging in user.");
         User existingUser = userServiceImpl.findByUserName(user.getUserName());
 
