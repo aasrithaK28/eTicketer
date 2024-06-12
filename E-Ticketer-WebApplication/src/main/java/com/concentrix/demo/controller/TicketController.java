@@ -15,8 +15,8 @@ import com.concentrix.demo.exception.TicketNotFoundException;
 import com.concentrix.demo.model.Order;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
-import com.concentrix.demo.service.OrderServiceImpl;
-import com.concentrix.demo.service.TicketServiceImpl;
+import com.concentrix.demo.service.ITicketService;
+import com.concentrix.demo.service.OrderService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,19 +24,21 @@ import jakarta.servlet.http.HttpSession;
 public class TicketController {
     private static final Logger logger = LogManager.getLogger(TicketController.class);
 
-    private final TicketServiceImpl ticketServiceImpl;
-    private final OrderServiceImpl orderServiceImpl;
+    @Autowired
+    private ITicketService ticketService;
+    @Autowired
+    private OrderService orderService;
 
     
-    public TicketController(TicketServiceImpl ticketServiceImpl, OrderServiceImpl orderServiceImpl) {
-        this.ticketServiceImpl = ticketServiceImpl;
-        this.orderServiceImpl = orderServiceImpl;
+    public TicketController(ITicketService ticketService, OrderService orderService) {
+        this.ticketService = ticketService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/sellTicket")
     public String viewHomePage(Model model, HttpSession session) {
         logger.info("Viewing Sell Ticket Page");
-        model.addAttribute("listTickets", ticketServiceImpl.getAll(((User) session.getAttribute("userId")).getUserId()));
+        model.addAttribute("listTickets", ticketService.getAll(((User) session.getAttribute("userId")).getUserId()));
         return "sellTicket";
      
         
@@ -53,7 +55,7 @@ public class TicketController {
 
     @PostMapping("/saveTicket")
     public String saveTicket(@ModelAttribute("ticket") Ticket ticket) {
-        ticketServiceImpl.saveTicket(ticket);
+        ticketService.saveTicket(ticket);
         logger.info("Saved Ticket");
         return "redirect:/sellTicket";
     }
@@ -61,7 +63,7 @@ public class TicketController {
     @GetMapping("/showFormForUpdate/{ticketId}")
     public String showFormForUpdate(@PathVariable(value = "ticketId") int ticketId, Model model, HttpSession session) throws TicketNotFoundException {
         logger.info("Showing Form for Update");
-        Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
+        Ticket ticket = ticketService.getTicketByTicketId(ticketId);
         ticket.setMyuser(((User) session.getAttribute("userId")));
         model.addAttribute("ticket", ticket);
         return "update_ticket";
@@ -69,21 +71,21 @@ public class TicketController {
 
     @GetMapping("/deleteTicket/{ticketId}")
     public String deleteTicket(@PathVariable(value = "ticketId") int ticketId) throws TicketNotFoundException, TicketHasOrdersException {
-        Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
+        Ticket ticket = ticketService.getTicketByTicketId(ticketId);
         if (ticket == null) {
             throw new TicketNotFoundException("Ticket not found with id: " + ticketId);
         }
-        if (ticketServiceImpl.hasOrders(ticketId)) {
+        if (ticketService.hasOrders(ticketId)) {
             throw new TicketHasOrdersException("Ticket with id: " + ticketId + " has orders and cannot be deleted");
         }
-        ticketServiceImpl.deleteTicketByTicketId(ticketId);
+        ticketService.deleteTicketByTicketId(ticketId);
         return "redirect:/sellTicket";
     }
 
     @GetMapping("/buy")
     public String showHome(Model model,HttpSession session) {
         logger.info("Showing Home Page for Buying Tickets");
-        model.addAttribute("tickets", ticketServiceImpl.getList());
+        model.addAttribute("tickets", ticketService.getList());
         return "buyTicket";
     }
 
@@ -91,7 +93,7 @@ public class TicketController {
     public String showOrderDetails(@PathVariable("ticketId") int ticketId, Model model, HttpSession session) throws TicketNotFoundException {
         logger.info("Showing Order Details for Ticket with ID: " + ticketId);
         session.setAttribute("ticketId", ticketId);
-        Ticket ticket = ticketServiceImpl.getTicketByTicketId(ticketId);
+        Ticket ticket = ticketService.getTicketByTicketId(ticketId);
         if (ticket == null) {
             throw new TicketNotFoundException("Ticket not found with id: " + ticketId);
         }
@@ -121,17 +123,17 @@ public class TicketController {
                                @RequestParam("resellQuantity") int resellQuantity,
                                HttpSession session, Model model) {
         
-        Order order = orderServiceImpl.getOrderById(orderId);
+        Order order = orderService.getOrderById(orderId);
         
         
         if (order == null || resellQuantity <= 0 || resellQuantity > order.getQuantity()) {
-            return "redirect:/myOrders"; 
+        	return "redirect:/allOrders?errorOrderId=" + orderId + "&errorMessage=Please%20enter%20a%20valid%20resell%20quantity."; 
         }
         
         int remainingQuantity = order.getQuantity() - resellQuantity;
         order.setQuantity(remainingQuantity);
         
-        orderServiceImpl.saveOrder(order);
+        orderService.saveOrder(order);
         
         Ticket originalTicket = order.getMyTicket();
         User user = (User) session.getAttribute("userId");
@@ -145,7 +147,7 @@ public class TicketController {
         resoldTicket.setMyuser(user);
         resoldTicket.setImageUrl(originalTicket.getImageUrl());
         
-        ticketServiceImpl.saveTicket(resoldTicket);
+        ticketService.saveTicket(resoldTicket);
         
         
 //        java.util.List<Ticket> listTickets = (java.util.List<Ticket>) session.getAttribute("listTickets");

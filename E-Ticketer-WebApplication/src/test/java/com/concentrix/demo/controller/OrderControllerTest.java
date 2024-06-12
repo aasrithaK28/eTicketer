@@ -1,6 +1,5 @@
 package com.concentrix.demo.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.concentrix.demo.model.Order;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
-import com.concentrix.demo.service.OrderServiceImpl;
-import com.concentrix.demo.service.TicketServiceImpl;
+import com.concentrix.demo.service.ITicketService;
+import com.concentrix.demo.service.OrderService;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 
@@ -33,10 +32,10 @@ class OrderControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private OrderServiceImpl orderService;
+    private OrderService orderService;
 
     @MockBean
-    private TicketServiceImpl ticketService;
+    private ITicketService ticketService;
 
     @Test
     public void testProcessOrderDetails_Success() throws Exception {

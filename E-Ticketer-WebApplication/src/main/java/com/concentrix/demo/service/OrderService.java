@@ -9,4 +9,5 @@ public interface OrderService {
 	public void saveOrder(Order order);
 	public List<Order> getAll(int userId);
 	public Order getOrderByTicketId(int ticketId);
+	public Order getOrderById(int orderId);
 }

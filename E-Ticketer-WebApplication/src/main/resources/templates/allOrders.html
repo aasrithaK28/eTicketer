@@ -40,6 +40,8 @@
             text-align: center;
             margin-top: 20px;
         }
+        
+      
     </style>
 </head>
 <body>
@@ -48,6 +50,7 @@
     
     <div class="row">
         <div th:each="order : ${ordersList}" class="col-md-6">
+        	
             <div class="card">
                 <img th:src="${order.myTicket.imageUrl}" class="card-img-top" alt="Event Image">
                 <div class="card-body">
@@ -55,6 +58,9 @@
                     <p class="card-text" th:text="${order.myTicket.description}"></p>
                     <p class="card-text">Quantity: <span th:text="${order.quantity}"></span></p>
                     <p class="card-text">Total Amount: <span th:text="${order.quantity * order.myTicket.price}"></span></p>
+                    <div th:if="${errorOrderId == order.orderId}">
+                        <p style="color: red; text-align: center;" th:text="${errorMessage}"></p>
+                    </div>
                 </div>
                 
                 <div class="card-footer">
@@ -63,8 +69,10 @@
                             <input type="hidden" name="orderId" th:value="${order.orderId}" />
                              <input type="hidden" name="userId" th:value="${order.myUser.userId}" />
                             <label for="resellQuantity">Resell Quantity:</label>
-                            <input type="number" name="resellQuantity" id="resellQuantity" value="1" />
-                            <button type="submit" class="btn btn-primary">Resell</button>
+                            <input type="number" name="resellQuantity" id="resellQuantity" value="1"
+                               th:disabled="${order.quantity == 0}" />
+                            <button type="submit" class="btn btn-primary" th:disabled="${order.quantity == 0}">Resell</button>
+                            
                         </form>
                     </div>
             </div>

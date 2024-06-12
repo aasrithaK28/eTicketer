@@ -47,29 +47,44 @@ class TicketServiceImplTest {
 
         verify(ticketRepository, times(1)).save(ticket);
     }
-
+    
     @Test
     public void testGetTicketByTicketId_TicketExists() throws TicketNotFoundException {
         int ticketId = 1;
         Ticket expectedTicket = new Ticket();
+        expectedTicket.setTicketId(ticketId);
         when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(expectedTicket));
 
         Ticket actualTicket = ticketService.getTicketByTicketId(ticketId);
 
+        assertNotNull(actualTicket);
         assertEquals(expectedTicket, actualTicket);
+        verify(ticketRepository, times(1)).findById(ticketId);
     }
-
+    
     @Test
-    public void testGetTicketByTicketId_TicketDoesNotExist(){
+    public void testGetTicketByTicketId_TicketNotFound(){
         int ticketId = 1;
         when(ticketRepository.findById(ticketId)).thenReturn(Optional.empty());
-        
-        assertThrows(TicketNotFoundException.class, () -> ticketService.getTicketByTicketId(ticketId));
+        TicketNotFoundException exception = assertThrows(TicketNotFoundException.class, () -> ticketService.getTicketByTicketId(ticketId));
+        assertEquals("Ticket not found with id: " + ticketId, exception.getMessage());
+        verify(ticketRepository, never()).deleteById(ticketId);
     
+    }
+    
+    @Test
+    public void testDeleteTicketByTicketId_TicketIsNull() {
+        
+        int ticketId = 1;
+        when(ticketRepository.findById(ticketId)).thenReturn(null);
+
+        TicketNotFoundException exception = assertThrows(TicketNotFoundException.class, () -> ticketService.deleteTicketByTicketId(ticketId));
+        assertEquals("Ticket not found with id: " + ticketId, exception.getMessage());
+        verify(ticketRepository, never()).deleteById(ticketId);
     }
 
     @Test
-    public void testDeleteTicketByTicketId_NoOrders() throws TicketNotFoundException, TicketHasOrdersException {
+    public void testDeleteTicketByTicketId_NoOrders_TicketExists() throws TicketNotFoundException, TicketHasOrdersException {
         int ticketId = 1;
         Ticket ticket = new Ticket();
         when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));

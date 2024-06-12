@@ -19,8 +19,9 @@
 <body>
     <div class="container">
         <h2 class="text-center mb-4">User Login</h2>
-        <div th:if="${param.error}">
-            <p style="color: red; text-align: center;">Invalid userName or password. Please try again.</p>
+        
+        <div th:if="${error}">
+            <p style="color: red; text-align: center;" th:text="${error}"></p>
         </div>
 
         <form th:action="@{/login}" method="post" onsubmit="return validatePassword();">

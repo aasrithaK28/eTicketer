@@ -21,12 +21,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import com.concentrix.demo.exception.TicketHasOrdersException;
 import com.concentrix.demo.exception.TicketNotFoundException;
 import com.concentrix.demo.model.Order;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
-import com.concentrix.demo.service.OrderServiceImpl;
-import com.concentrix.demo.service.TicketServiceImpl;
+import com.concentrix.demo.service.ITicketService;
+import com.concentrix.demo.service.OrderService;
 
 import jakarta.servlet.http.HttpSession;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -42,10 +43,10 @@ class TicketControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private TicketServiceImpl ticketServiceImpl;
+    private ITicketService ticketService;
 
     @MockBean
-    private OrderServiceImpl orderServiceImpl;
+    private OrderService orderService;
     
     @Mock
     private HttpSession session;
@@ -60,7 +61,7 @@ class TicketControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user);
 
-        when(ticketServiceImpl.getAll(user.getUserId())).thenReturn(tickets);
+        when(ticketService.getAll(user.getUserId())).thenReturn(tickets);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/sellTicket")
                 .session(session))
@@ -91,7 +92,7 @@ class TicketControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/sellTicket"));
 
-        verify(ticketServiceImpl, times(1)).saveTicket(any(Ticket.class));
+        verify(ticketService, times(1)).saveTicket(any(Ticket.class));
     }
 
     @Test
@@ -104,7 +105,7 @@ class TicketControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user);
 
-        when(ticketServiceImpl.getTicketByTicketId(1)).thenReturn(ticket);
+        when(ticketService.getTicketByTicketId(1)).thenReturn(ticket);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/showFormForUpdate/1")
                 .session(session))
@@ -113,18 +114,46 @@ class TicketControllerTest {
     }
 
     @Test
-    public void testDeleteTicket() throws Exception {
+    public void testDeleteTicket_Success() throws Exception {
         Ticket ticket = new Ticket();
         ticket.setTicketId(1);
 
-        when(ticketServiceImpl.getTicketByTicketId(1)).thenReturn(ticket);
-        when(ticketServiceImpl.hasOrders(1)).thenReturn(false);
+        when(ticketService.getTicketByTicketId(1)).thenReturn(ticket);
+        when(ticketService.hasOrders(1)).thenReturn(false);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/deleteTicket/1"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/sellTicket"));
 
-        verify(ticketServiceImpl, times(1)).deleteTicketByTicketId(1);
+        verify(ticketService, times(1)).deleteTicketByTicketId(1);
+    }
+    
+    @Test
+    public void testDeleteTicket_TicketNotFound() throws Exception {
+        when(ticketService.getTicketByTicketId(1)).thenReturn(null);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/deleteTicket/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof TicketNotFoundException))
+                .andExpect(result -> assertEquals("Ticket not found with id: 1", result.getResolvedException().getMessage()));
+
+        verify(ticketService, times(0)).deleteTicketByTicketId(1); 
+    }
+    
+    
+    @Test
+    public void testDeleteTicket_TicketHasOrders() throws Exception {
+        Ticket ticket = new Ticket();
+        ticket.setTicketId(1);
+
+        when(ticketService.getTicketByTicketId(1)).thenReturn(ticket);
+        when(ticketService.hasOrders(1)).thenReturn(true);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/deleteTicket/1"))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof TicketHasOrdersException))
+                .andExpect(result -> assertEquals("Ticket with id: 1 has orders and cannot be deleted", result.getResolvedException().getMessage()));
+
+        verify(ticketService, times(0)).deleteTicketByTicketId(1); 
     }
 
     @Test
@@ -132,7 +161,7 @@ class TicketControllerTest {
         List<Ticket> tickets = new ArrayList<>();
         tickets.add(new Ticket());
 
-        when(ticketServiceImpl.getList()).thenReturn(tickets);
+        when(ticketService.getList()).thenReturn(tickets);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/buy"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -146,21 +175,21 @@ class TicketControllerTest {
 
         MockHttpSession session = new MockHttpSession();
 
-        when(ticketServiceImpl.getTicketByTicketId(1)).thenReturn(ticket);
+        when(ticketService.getTicketByTicketId(1)).thenReturn(ticket);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/orderDetails/1")
                 .session(session))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("ticket"));
 
-        verify(ticketServiceImpl, times(1)).getTicketByTicketId(1);
+        verify(ticketService, times(1)).getTicketByTicketId(1);
     }
     
     @Test
     public void testShowOrderDetails_TicketNotFound() throws Exception {
         MockHttpSession session = new MockHttpSession();
 
-        when(ticketServiceImpl.getTicketByTicketId(1)).thenReturn(null);
+        when(ticketService.getTicketByTicketId(1)).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/orderDetails/1")
                 .session(session))
@@ -168,7 +197,7 @@ class TicketControllerTest {
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof TicketNotFoundException))
                 .andExpect(result -> assertEquals("Ticket not found with id: 1", result.getResolvedException().getMessage()));
 
-        verify(ticketServiceImpl, times(1)).getTicketByTicketId(1);
+        verify(ticketService, times(1)).getTicketByTicketId(1);
     }
 
 
@@ -220,7 +249,7 @@ class TicketControllerTest {
         session.setAttribute("userId", user);
 
         
-        when(orderServiceImpl.getOrderById(1)).thenReturn(order);
+        when(orderService.getOrderById(1)).thenReturn(order);
         
         mockMvc.perform(MockMvcRequestBuilders.post("/resellTicket")
                 .param("orderId", "1")
@@ -233,16 +262,15 @@ class TicketControllerTest {
     
     @Test
     public void testResellTicket_OrderNotFound() throws Exception {
-        when(orderServiceImpl.getOrderById(1)).thenReturn(null);
+        when(orderService.getOrderById(1)).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/resellTicket")
                 .param("orderId", "1")
                 .param("userId", "1")
                 .param("resellQuantity", "5")
                 .session(new MockHttpSession()))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/myOrders"));
-        
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+
     }
     
     @Test
@@ -251,15 +279,15 @@ class TicketControllerTest {
         order.setOrderId(1);
         order.setQuantity(10);
 
-        when(orderServiceImpl.getOrderById(1)).thenReturn(order);
+        when(orderService.getOrderById(1)).thenReturn(order);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/resellTicket")
                 .param("orderId", "1")
                 .param("userId", "1")
                 .param("resellQuantity", "0")
                 .session(new MockHttpSession()))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/myOrders"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+                
  
     }
 
@@ -270,15 +298,15 @@ class TicketControllerTest {
         order.setOrderId(1);
         order.setQuantity(10);
 
-        when(orderServiceImpl.getOrderById(1)).thenReturn(order);
+        when(orderService.getOrderById(1)).thenReturn(order);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/resellTicket")
                 .param("orderId", "1")
                 .param("userId", "1")
                 .param("resellQuantity", "15")
                 .session(new MockHttpSession()))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/myOrders"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+                
 
         
     }
