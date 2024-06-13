@@ -1,13 +1,16 @@
 package com.concentrix.demo;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ETicketerWebappApplicationTests {
+class appTest {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    	
+    }
+    
 }

@@ -3,6 +3,7 @@ package com.concentrix.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.concentrix.demo.exception.UserNotFoundException;
 import com.concentrix.demo.model.User;
 import com.concentrix.demo.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -15,13 +16,14 @@ public class UserServiceImpl implements IUserService{
 	private UserRepository userRepository;
 
 	@Override
-	public User findByUserName(String userName) {
+	public User findByUserName(String userName) throws UserNotFoundException {
 		logger.info("Finding user by username: {}", userName);
         User user = userRepository.findByUserName(userName);
         if (user != null) {
             logger.info("User found with username: {}", userName);
         } else {
             logger.warn("User not found with username: {}", userName);
+            throw new UserNotFoundException("User not found with username: " + userName);
         }
         return user;
 	}

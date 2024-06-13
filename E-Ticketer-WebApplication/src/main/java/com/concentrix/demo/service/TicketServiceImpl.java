@@ -35,26 +35,31 @@ public class TicketServiceImpl implements ITicketService{
 	}
 
 	@Override
-	public Ticket getTicketByTicketId(int ticketId) {
+	public Ticket getTicketByTicketId(int ticketId) throws TicketNotFoundException {
 		logger.info("Retrieving ticket for id: {}", ticketId);
         Optional<Ticket> optional = ticketRepository.findById(ticketId);
-        Ticket ticket = null;
+
         if (optional.isPresent()) {
-            ticket = optional.get();
+        	Ticket ticket = optional.get();
             logger.info("Ticket found for id: {}", ticketId);
+            return ticket;
         } else {
             logger.warn("Ticket not found for id: {}", ticketId);
+            throw new TicketNotFoundException("Ticket not found with id: " + ticketId);
         }
-        return ticket;
+       
 	}
 
 	@Override
 	public void deleteTicketByTicketId(int ticketId) throws TicketNotFoundException, TicketHasOrdersException {
 		
-		Ticket ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+		Optional<Ticket> ticket = ticketRepository.findById(ticketId);
+                //.orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
 		long orderCount = ticketRepository.countOrdersByTicketId(ticketId);
 		
+		if (ticket==null){
+			throw new TicketNotFoundException("Ticket not found with id: " + ticketId);
+		}
 		if (orderCount > 0) {
             throw new TicketHasOrdersException("Cannot delete ticket with id " + ticketId +
                     " because it has associated orders.");

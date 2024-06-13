@@ -52,24 +52,38 @@
             background-color: #4d94ff;
         }
         
+        .error-message {
+            color: red;
+            margin-bottom: 20px;
+        }
+        
+        .order-details-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
         
     </style>
     
 </head>
 <body>
-    <div class="order-details-container">
-        <h1>Order Details</h1>
-        <p>Event Name: <span th:text="${ticket.eventName}"></span></p>
-        <p>Description: <span th:text="${ticket.description}"></span></p>
-        <p>Price per Ticket: <span th:text="${ticket.price}"></span></p>
-        <form  action="/orderDetails" method="post">
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" min="1" required>
-            <button type="submit" >Order</button>
-            <p th:if="${error}">Invalid quantity entered. Please enter a valid quantity.</p>
-        </form>
+
+	<div class="order-details-wrapper">
+        <p class="error-message" th:if="${error}">You have exceeded the quantity limit, please enter the quantity within the range.</p>
+        <div class="order-details-container">
+            <h1>Order Details</h1>
+            <p>Event Name: <span th:text="${ticket.eventName}"></span></p>
+            <p>Description: <span th:text="${ticket.description}"></span></p>
+            <p>Price per Ticket: <span th:text="${ticket.price}"></span></p>
+            <form action="/orderDetails" method="post">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required>
+                <button type="submit">Order</button>
+            </form>
+        </div>
     </div>
-    
     
 </body>
 </html>

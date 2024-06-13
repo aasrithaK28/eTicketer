@@ -112,20 +112,27 @@
     
     <script>
     function searchTickets() {
-        var input, filter, div, title, i;
+        var input, filter, div, title, description, i;
         input = document.getElementById("searchInput");
         filter = input.value.toUpperCase();
         div = document.getElementById("ticketResults");
         title = div.getElementsByClassName("ticket-title");
+        description = div.getElementsByClassName("ticket-description");
 
         for (i = 0; i < title.length; i++) {
-            if (title[i].innerText.toUpperCase().indexOf(filter) > -1) {
+            var titleText = title[i].innerText.toUpperCase();
+            var descriptionText = description[i].innerText.toUpperCase();
+            if (titleText.indexOf(filter) > -1 || descriptionText.indexOf(filter) > -1) {
                 title[i].parentNode.parentNode.parentNode.style.display = "";
             } else {
                 title[i].parentNode.parentNode.parentNode.style.display = "none";
             }
         }
     }
-   </script>
+    
+
+    </script>
+
+    
 </body>
 </html>

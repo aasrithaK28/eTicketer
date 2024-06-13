@@ -1,6 +1,7 @@
 package com.concentrix.demo.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,13 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import com.concentrix.demo.exception.UserNotFoundException;
 import com.concentrix.demo.model.Ticket;
 import com.concentrix.demo.model.User;
-import com.concentrix.demo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpSession;
-import com.concentrix.demo.service.TicketServiceImpl;
+
+import com.concentrix.demo.service.ITicketService;
+import com.concentrix.demo.service.IUserService;
 
 @Controller
 public class UserController {
@@ -23,13 +25,14 @@ public class UserController {
 	private static final Logger logger = LogManager.getLogger(UserController.class);
 	
 	@Autowired
-	private UserServiceImpl userServiceImpl;
-	@Autowired
-    private  TicketServiceImpl ticketServiceImpl;
+	private IUserService userService;
 	
-	public UserController(UserServiceImpl userServiceImpl) {
+	@Autowired
+    private  ITicketService ticketService;
+	
+	public UserController(IUserService userService) {
 		super();
-		this.userServiceImpl = userServiceImpl;
+		this.userService = userService;
 	}
 
 
@@ -56,7 +59,7 @@ public class UserController {
             model.addAttribute("error", "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number.");
             return "register";
         }
-        userServiceImpl.saveUser(user);
+        userService.saveUser(user);
         logger.info("User registered successfully.");
         return "redirect:/login";
     }
@@ -67,38 +70,22 @@ public class UserController {
     }
 
 
-    
-//    @PostMapping("/login")
-//    public String loginUser(User user, Model model,HttpSession session) {
-//    	logger.info("Logging in user.");
-//        User existingUser = userServiceImpl.findByUserName(user.getUserName());
-//
-//        if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
-//        	session.setAttribute("userId",existingUser);
-//        	logger.info("User logged in successfully.");
-//            return "redirect:/home";
-//        } else {
-//        	logger.error("Failed to login. Invalid credentials.");
-//            return "login";
-//        }
-//    }
-    
-    
     @PostMapping("/login")
-    public String loginUser(User user, Model model, HttpSession session) {
+    public String loginUser(User user, Model model, HttpSession session) throws UserNotFoundException {
         logger.info("Logging in user.");
-        User existingUser = userServiceImpl.findByUserName(user.getUserName());
+        User existingUser = userService.findByUserName(user.getUserName());
 
         if (existingUser != null && existingUser.getPassword().equals(user.getPassword())) {
             session.setAttribute("userId", existingUser);
 
-            List<Ticket> userTickets = ticketServiceImpl.getAll(existingUser.getUserId());
+            List<Ticket> userTickets = ticketService.getAll(existingUser.getUserId());
             session.setAttribute("listTickets", userTickets);
 
             logger.info("User logged in successfully.");
             return "redirect:/home";
         } else {
             logger.error("Failed to login. Invalid credentials.");
+            model.addAttribute("error", "Invalid userName or password. Please try again.");
             return "login";
         }
     }
@@ -107,15 +94,26 @@ public class UserController {
     @GetMapping("/home1")
     public String showHome1(Model model) {
     	logger.info("Displaying home1 page.");
-    	model.addAttribute("listTickets",ticketServiceImpl.getList());
+    	model.addAttribute("listTickets",ticketService.getList());
         return "home1";
     }
 
     @GetMapping("/home")
-    public String showHome(Model model) {
+    public String showHome(Model model, HttpSession session) {
     	logger.info("Displaying home page.");
-    	model.addAttribute("listTickets",ticketServiceImpl.getList());
-    	return "home";
+    	User currentUser = (User) session.getAttribute("userId");
+
+       
+        List<Ticket> allTickets = ticketService.getList();
+
+        
+        List<Ticket> filteredTickets = allTickets.stream()
+                .filter(ticket -> ticket.getMyuser().getUserId()!= currentUser.getUserId())
+                .collect(Collectors.toList());
+
+        model.addAttribute("listTickets", filteredTickets);
+        return "home";
+
     }
     
     @GetMapping("/help")
