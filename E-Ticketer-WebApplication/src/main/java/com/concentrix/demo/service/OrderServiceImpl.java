@@ -43,5 +43,9 @@ public class OrderServiceImpl implements OrderService{
         }
         return order;
 	}
+	
+	public Order getOrderById(int orderId) {
+	    return orderRepository.findById(orderId).orElse(null);
+	}
 
 }
