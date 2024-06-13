@@ -1,0 +1,93 @@
+2024-06-13T13:38:45.060+05:30  INFO 20948 --- [restartedMain] com.concentrix.demo.app                  : Starting app using Java 17.0.9 with PID 20948 (C:\Users\kaasritha\git\eTicketer\E-Ticketer-WebApplication\target\classes started by kaasritha in C:\Users\kaasritha\git\eTicketer\E-Ticketer-WebApplication)
+2024-06-13T13:38:45.063+05:30  INFO 20948 --- [restartedMain] com.concentrix.demo.app                  : No active profile set, falling back to 1 default profile: "default"
+2024-06-13T13:38:45.136+05:30  INFO 20948 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-06-13T13:38:45.137+05:30  INFO 20948 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-06-13T13:38:46.703+05:30  INFO 20948 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-13T13:38:46.846+05:30  INFO 20948 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 124 ms. Found 3 JPA repository interfaces.
+2024-06-13T13:38:47.577+05:30  WARN 20948 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [annotationActionEndpointMapping] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-06-13T13:38:47.655+05:30  INFO 20948 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-13T13:38:48.408+05:30  INFO 20948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-13T13:38:48.477+05:30  INFO 20948 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-13T13:38:48.477+05:30  INFO 20948 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-06-13T13:38:48.604+05:30  INFO 20948 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-13T13:38:48.604+05:30  INFO 20948 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3464 ms
+2024-06-13T13:38:48.948+05:30  INFO 20948 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-13T13:38:49.157+05:30  INFO 20948 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-06-13T13:38:49.227+05:30  INFO 20948 --- [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-13T13:38:50.080+05:30  INFO 20948 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-13T13:38:50.135+05:30  INFO 20948 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-13T13:38:50.744+05:30  INFO 20948 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@47d60729
+2024-06-13T13:38:50.752+05:30  INFO 20948 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-13T13:38:50.847+05:30  WARN 20948 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-06-13T13:38:52.881+05:30  INFO 20948 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-13T13:38:52.995+05:30  INFO 20948 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-13T13:38:53.411+05:30  INFO 20948 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-06-13T13:38:53.675+05:30  WARN 20948 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-13T13:38:53.703+05:30  INFO 20948 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-13T13:38:54.638+05:30  INFO 20948 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-13T13:38:55.064+05:30  INFO 20948 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-06-13T13:38:55.079+05:30  INFO 20948 --- [restartedMain] com.concentrix.demo.app                  : Started app in 11.125 seconds (process running for 13.396)
+2024-06-13T13:40:09.266+05:30  INFO 20948 --- [RMI TCP Connection(6)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-06-13T13:40:09.315+05:30  INFO 20948 --- [RMI TCP Connection(6)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-13T13:40:09.319+05:30  INFO 20948 --- [RMI TCP Connection(6)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-06-13T13:40:09.331+05:30  INFO 20948 --- [RMI TCP Connection(6)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-06-13T13:40:12.752+05:30  INFO 20212 --- [restartedMain] com.concentrix.demo.app                  : Starting app using Java 17.0.9 with PID 20212 (C:\Users\kaasritha\git\eTicketer\E-Ticketer-WebApplication\target\classes started by kaasritha in C:\Users\kaasritha\git\eTicketer\E-Ticketer-WebApplication)
+2024-06-13T13:40:12.755+05:30  INFO 20212 --- [restartedMain] com.concentrix.demo.app                  : No active profile set, falling back to 1 default profile: "default"
+2024-06-13T13:40:12.804+05:30  INFO 20212 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-06-13T13:40:12.805+05:30  INFO 20212 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-06-13T13:40:13.470+05:30  INFO 20212 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-13T13:40:13.548+05:30  INFO 20212 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 3 JPA repository interfaces.
+2024-06-13T13:40:13.845+05:30  WARN 20212 --- [restartedMain] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [annotationActionEndpointMapping] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-06-13T13:40:13.888+05:30  INFO 20212 --- [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2024-06-13T13:40:14.173+05:30  INFO 20212 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2024-06-13T13:40:14.184+05:30  INFO 20212 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-06-13T13:40:14.185+05:30  INFO 20212 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-06-13T13:40:14.263+05:30  INFO 20212 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-06-13T13:40:14.263+05:30  INFO 20212 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1457 ms
+2024-06-13T13:40:14.429+05:30  INFO 20212 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-13T13:40:14.493+05:30  INFO 20212 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-06-13T13:40:14.531+05:30  INFO 20212 --- [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-06-13T13:40:14.765+05:30  INFO 20212 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-13T13:40:14.796+05:30  INFO 20212 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-06-13T13:40:15.122+05:30  INFO 20212 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1d435146
+2024-06-13T13:40:15.125+05:30  INFO 20212 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-06-13T13:40:15.179+05:30  WARN 20212 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-06-13T13:40:16.072+05:30  INFO 20212 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-13T13:40:16.160+05:30  INFO 20212 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-13T13:40:16.457+05:30  INFO 20212 --- [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-06-13T13:40:16.611+05:30  WARN 20212 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-06-13T13:40:16.633+05:30  INFO 20212 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-06-13T13:40:17.062+05:30  INFO 20212 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-06-13T13:40:17.109+05:30  INFO 20212 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2024-06-13T13:40:17.118+05:30  INFO 20212 --- [restartedMain] com.concentrix.demo.app                  : Started app in 4.791 seconds (process running for 5.847)
+2024-06-13T13:40:21.988+05:30  INFO 20212 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-06-13T13:40:21.988+05:30  INFO 20212 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-06-13T13:40:21.991+05:30  INFO 20212 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-06-13T13:40:22.044+05:30  INFO 20212 --- [http-nio-8080-exec-1] c.c.demo.controller.UserController       : Accessing index page.
+2024-06-13T13:40:28.200+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.controller.UserController       : Displaying home1 page.
+2024-06-13T13:40:28.201+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieving list of tickets
+2024-06-13T13:40:28.445+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieved 14 tickets
+2024-06-13T13:40:40.421+05:30  WARN 20212 --- [http-nio-8080-exec-5] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [204] milliseconds.
+2024-06-13T13:40:40.428+05:30  INFO 20212 --- [http-nio-8080-exec-5] c.c.demo.controller.UserController       : Logging in user.
+2024-06-13T13:40:40.428+05:30  INFO 20212 --- [http-nio-8080-exec-5] c.c.demo.service.UserServiceImpl         : Finding user by username: Reema
+2024-06-13T13:40:40.571+05:30  INFO 20212 --- [http-nio-8080-exec-5] c.c.demo.service.UserServiceImpl         : User found with username: Reema
+2024-06-13T13:40:40.574+05:30  INFO 20212 --- [http-nio-8080-exec-5] c.c.demo.controller.UserController       : User logged in successfully.
+2024-06-13T13:40:40.588+05:30  INFO 20212 --- [http-nio-8080-exec-6] c.c.demo.controller.UserController       : Displaying home page.
+2024-06-13T13:40:40.588+05:30  INFO 20212 --- [http-nio-8080-exec-6] c.c.demo.service.TicketServiceImpl       : Retrieving list of tickets
+2024-06-13T13:40:40.599+05:30  INFO 20212 --- [http-nio-8080-exec-6] c.c.demo.service.TicketServiceImpl       : Retrieved 14 tickets
+2024-06-13T13:40:43.215+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.controller.OrderController      : Fetching All Orders
+2024-06-13T13:40:43.215+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.service.OrderServiceImpl        : Retrieving all orders for user with ID: 2
+2024-06-13T13:40:43.926+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.service.OrderServiceImpl        : Retrieved 3 orders for user with ID: 2
+2024-06-13T13:40:58.570+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.controller.UserController       : Displaying home page.
+2024-06-13T13:40:58.571+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieving list of tickets
+2024-06-13T13:40:58.590+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieved 14 tickets
+2024-06-13T13:41:46.706+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.controller.OrderController      : Fetching All Orders
+2024-06-13T13:41:46.707+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.service.OrderServiceImpl        : Retrieving all orders for user with ID: 2
+2024-06-13T13:41:46.721+05:30  INFO 20212 --- [http-nio-8080-exec-8] c.c.demo.service.OrderServiceImpl        : Retrieved 3 orders for user with ID: 2
+2024-06-13T13:41:49.016+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.controller.UserController       : Displaying home page.
+2024-06-13T13:41:49.017+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieving list of tickets
+2024-06-13T13:41:49.034+05:30  INFO 20212 --- [http-nio-8080-exec-7] c.c.demo.service.TicketServiceImpl       : Retrieved 14 tickets
+2024-06-13T14:01:33.659+05:30  INFO 20212 --- [RMI TCP Connection(25)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2024-06-13T14:01:33.704+05:30  INFO 20212 --- [RMI TCP Connection(25)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-13T14:01:33.710+05:30  INFO 20212 --- [RMI TCP Connection(25)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-06-13T14:01:33.727+05:30  INFO 20212 --- [RMI TCP Connection(25)-127.0.0.1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
